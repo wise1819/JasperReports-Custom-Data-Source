@@ -1,3 +1,4 @@
+import Util.AuthenticationReader;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
@@ -11,7 +12,7 @@ public class ProjektronDataSource implements JRDataSource {
     private ProjektronDataSource() {
         super();
         final DataFetcher dataFetcher = new DataFetcher();
-        var authString = Util.AuthenticationReader.getUserAuthentication();
+        String authString = Util.AuthenticationReader.getUserAuthentication(AuthenticationReader.API_TYPE.BOOKING);
         dataFetcher.authenticate("{userLogin: \"<USERNAME>\", userPwd: \"<PASSWORD>\"}");
         data = dataFetcher.getData(null).getJSONArray("bookings");
     }
