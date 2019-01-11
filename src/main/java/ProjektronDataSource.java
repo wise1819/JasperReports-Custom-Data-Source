@@ -11,6 +11,7 @@ public class ProjektronDataSource implements JRDataSource {
     private ProjektronDataSource() {
         super();
         final DataFetcher dataFetcher = new DataFetcher();
+        var authString = Util.AuthenticationReader.getUserAuthentication();
         dataFetcher.authenticate("{userLogin: \"<USERNAME>\", userPwd: \"<PASSWORD>\"}");
         data = dataFetcher.getData(null).getJSONArray("bookings");
     }

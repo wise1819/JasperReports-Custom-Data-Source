@@ -6,6 +6,11 @@ class DataFetcher {
     private String Cookie;
     private String X_CSRF_Token;
 
+    /**
+     *
+     * @param credentialsString
+     * @return
+     */
     boolean authenticate(String credentialsString) {
         final String url = "https://fu-projekt.bcs-hosting.de/app/rest/auth/login";
         final HttpResponse<JsonNode> authentificationResponse;
