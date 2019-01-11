@@ -6,13 +6,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+//TODO: Test on Windows
+
+// ### HOW TO USE THIS AUTHENTICATION READER ###
+// So far 2 Methods are supported
+// 1. read from a file located at "~/.bcs" with a format like:
+// "user=<username>
+// "password=<password>
+// 2. read from environment Variables with Variable-Names: "BCS_USER" and "BCS_PASSWORD"
+
+
 public class AuthenticationReader {
     public enum API_TYPE {
         BOOKING, MYLIN
     }
 
     /**
-     * TODO: What is the best way to get the credentials?
      * Tries to get user-credentials for a bcs-instance via 1. Text-File
      *
      * @param api the type of the API to form the JSON
@@ -21,18 +30,17 @@ public class AuthenticationReader {
     public static String getUserAuthentication(API_TYPE api) {
         Map<String, String> auth = readFromPasswordFile();
         if (auth == null)
-            auth = readFromEnviromentVariables();
+            auth = readFromEnvironmentVariables();
         if (auth == null)
             return null;
         return constructJson(auth, api);
     }
 
     /**
-     * TODO: Check if this works on Windows too
-     *
      * reads from the file located at ~/.bcs that contains the username and password in the following format:
-     *             user=<username>
-     *             password=<password>
+     * user=<username>
+     * password=<password>
+     *
      * @return
      */
     private static Map<String, String> readFromPasswordFile() {
@@ -66,13 +74,17 @@ public class AuthenticationReader {
         return auth;
     }
 
-
-    private static Map<String, String> readFromEnviromentVariables() {
-        Map<String,String> env, auth;
+    /**
+     * Reads the User-Credentials from the System-Environment-Variables named "BCS_USER" and "BCS_PASSWORD"
+     *
+     * @return
+     */
+    private static Map<String, String> readFromEnvironmentVariables() {
+        Map<String, String> env, auth;
         auth = new HashMap<>();
         env = System.getenv();
-        auth.put("user",env.get("BCS_USER"));
-        auth.put("password",env.get("BCS_PASSWORD"));
+        auth.put("user", env.get("BCS_USER"));
+        auth.put("password", env.get("BCS_PASSWORD"));
         if (auth.size() == 2)
             return auth;
         else
