@@ -19,9 +19,7 @@ public class AuthenticationReader {
      * @return a String that incoperates the user's credentials in the
      */
     public static String getUserAuthentication(API_TYPE api) {
-        //Tries reading credentials from the file .bcs in the users home-dir
-        String userHome = System.getProperty("user.home");
-        Map<String, String> auth = readFromPasswordFile(userHome + "/.bcs");
+        Map<String, String> auth = readFromPasswordFile();
         if (auth == null)
             auth = readFromEnviromentVariables();
         if (auth == null)
@@ -30,14 +28,17 @@ public class AuthenticationReader {
     }
 
     /**
-     * TODO: Check how to do this for windows
+     * TODO: Check if this works on Windows too
      *
-     * @param path path to the file that contains the username and password in the following format:
+     * reads from the file located at ~/.bcs that contains the username and password in the following format:
      *             user=<username>
      *             password=<password>
      * @return
      */
-    private static Map<String, String> readFromPasswordFile(String path) {
+    private static Map<String, String> readFromPasswordFile() {
+        //Tries reading credentials from the file .bcs in the users home-dir
+        String path = System.getProperty("user.home") + "/.bcs";
+
         String line;
         Map<String, String> auth = new HashMap<>();
         try {
@@ -70,8 +71,8 @@ public class AuthenticationReader {
         Map<String,String> env, auth;
         auth = new HashMap<>();
         env = System.getenv();
-        auth.put("user",env.get("bcs_user"));
-        auth.put("password",env.get("bcs_password"));
+        auth.put("user",env.get("BCS_USER"));
+        auth.put("password",env.get("BCS_PASSWORD"));
         if (auth.size() == 2)
             return auth;
         else
