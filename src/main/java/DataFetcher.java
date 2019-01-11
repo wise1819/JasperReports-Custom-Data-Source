@@ -9,14 +9,14 @@ class DataFetcher {
     /**
      *
      * @param credentialsString
-     * @return
+     * @return success
      */
     boolean authenticate(String credentialsString) {
         final String url = "https://fu-projekt.bcs-hosting.de/app/rest/auth/login";
-        final HttpResponse<JsonNode> authentificationResponse;
+        final HttpResponse<JsonNode> authenticationResponse;
 
         try {
-            authentificationResponse = Unirest.post(url)
+            authenticationResponse = Unirest.post(url)
                     .header("Content-Type", "application/json")
                     .body(credentialsString)
                     .asJson();
@@ -24,11 +24,11 @@ class DataFetcher {
             return false;
         }
 
-        if (authentificationResponse.getStatus() != 200) {
+        if (authenticationResponse.getStatus() != 200) {
             return false;
         }
 
-        final Headers headers = authentificationResponse.getHeaders();
+        final Headers headers = authenticationResponse.getHeaders();
         Cookie = headers.getFirst("Cookie");
         X_CSRF_Token = headers.getFirst("X-Csrf-Token");
 
@@ -36,10 +36,7 @@ class DataFetcher {
     }
 
     JSONObject getData(String url) {
-        if (url == null) url = "https://fu-projekt.bcs-hosting.de/app/rest/timerecording/bookings";
-
         final HttpResponse<JsonNode> dataResponse;
-
         try {
             dataResponse = Unirest.get(url)
                     .header("Cookie", Cookie)

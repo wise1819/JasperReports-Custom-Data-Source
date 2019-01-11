@@ -1,6 +1,4 @@
-import Util.AuthenticationReader;
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,10 +9,13 @@ public class ProjektronDataSource implements JRDataSource {
 
     private ProjektronDataSource() {
         super();
+        final String url = "https://fu-projekt.bcs-hosting.de/app/rest/timerecording/bookings?syncStateTimestamp=0&minDate=2018-10-29";
+
         final DataFetcher dataFetcher = new DataFetcher();
-        String authString = Util.AuthenticationReader.getUserAuthentication(AuthenticationReader.API_TYPE.BOOKING);
-        dataFetcher.authenticate(authString);
-        data = dataFetcher.getData(null).getJSONArray("bookings");
+        BCSCredentials credentials = new BCSCredentials();
+        // TODO: The format needs to be hard coded. Use Gradle (there are compiling parameters or something like that that can parameterize the execution, creating two classes from one, with each having a different format hard coded)
+        dataFetcher.authenticate(credentials.asJSON(BCSCredentials.FORMAT.BOOKING));
+        data = dataFetcher.getData(url).getJSONArray("bookings");
     }
 
     @Override
