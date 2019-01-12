@@ -2,6 +2,7 @@
 A Java implementation of a custom data source for JasperReports to use in order to fetch data from Projektron's BCS server
 
 ## Building the project
+To build the custom data source, run `gradle shadowJar`. This will (among other things) create a `build/libs/` folder with a single `.jar` file in it. This file contains the data adapter and all of its dependencies.
 ### Enabling Authentication
 Currently there are two ways of passing in user-credentials into the custom-data-source component implemented:
 1. Put a file at `$HOME/.bcs` (e.g. `c:\users\name\.bcs` in windows) containing two lines `user=USERNAME` and `password=PASSWORD`
