@@ -44,8 +44,12 @@ class BCSCredentials {
             Files.lines(path).forEach(line -> {
                 String[] parts = line.split("=");
                 switch (parts[0]) {
-                    case "user": this.username = parts[1]; break;
-                    case "password": this.password = parts[1]; break;
+                    case "user":
+                        this.username = parts[1];
+                        break;
+                    case "password":
+                        this.password = parts[1];
+                        break;
                 }
             });
         } catch (IOException e) {
@@ -68,11 +72,13 @@ class BCSCredentials {
     }
 
     String asJSON(FORMAT format) {
-        // TODO: implement the other login string format for the other api
         switch (format) {
-            case BOOKING: return String.format("{userLogin:\"%s\",userPwd:\"%s\"}", username, password);
-            case MYLIN: throw new NotImplementedException();
-            default: return null;
+            case BOOKING:
+                return String.format("{userLogin:\"%s\",userPwd:\"%s\"}", username, password);
+            case MYLIN:
+                return String.format("{login:\"%s\",pwd:\"%s\"}", username, password);
+            default:
+                return null;
         }
     }
 }

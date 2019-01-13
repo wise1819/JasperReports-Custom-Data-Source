@@ -3,6 +3,7 @@ import net.sf.jasperreports.engine.JRField;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+//TODO: Other authentication-String added, but the Mylin-Rest-Interface works differently since it relies on a JSESSIONID-cookie
 public class ProjektronDataSource implements JRDataSource {
     private JSONArray data;
     private int index = -1;
