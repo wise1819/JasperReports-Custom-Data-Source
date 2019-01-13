@@ -15,9 +15,6 @@ import java.util.Map;
 
 
 class BCSCredentials {
-    enum FORMAT {
-        BOOKING, MYLIN
-    }
 
     private String username;
     private String password;
@@ -71,7 +68,7 @@ class BCSCredentials {
         return (username != null && password != null);
     }
 
-    String asJSON(FORMAT format) {
+    String asJSON(ProjektronDataSource.API format) {
         switch (format) {
             case BOOKING:
                 return String.format("{userLogin:\"%s\",userPwd:\"%s\"}", username, password);
