@@ -8,10 +8,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-/* 
- * (Authenticator.java:27) authenticate(..) : {Keep-Alive=[timeout=5, max=100], Server=[], X-Content-Type-Options=[nosniff], Connection=[Keep-Alive], Date=[Sun, 20 Jan 2019 10:36:56 GMT], Strict-Transport-Security=[max-age=2592000], Cache-Control=[private, no-cache, no-store, no-transform, must-revalidate, max-age=0], Content-Encoding=[UTF-8], X-CSRF-Token=[kz_RsASNksfn0a4dIU7mia33Am4BqFbduQqCNUW_Xb8], Set-Cookie=[MobileAppToken=U6DEQr4Tnd3ZgnDpdJjjDkgPlCDaqjlmnBZGdy_I76s;Version=1;Path=/;Max-Age=2592000;HttpOnly], Content-Length=[237], X-XSS-Protection=[1; mode=block], Content-Type=[application/json]}
- */
-
 public class Authenticator {
 
 	public static final AuthenticationObject INVALID_AUTHENTICATIONOBJECT = new AuthenticationObject("", "");
