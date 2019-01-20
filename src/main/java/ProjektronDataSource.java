@@ -1,33 +1,43 @@
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRField;
-import org.json.JSONArray;
+import java.util.List;
+
 import org.json.JSONObject;
 
+import authentication.AuthenticationObject;
+import authentication.Authenticator;
+import bookings.BookingsFetcher;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRField;
+
 public class ProjektronDataSource implements JRDataSource {
-    private JSONArray data;
-    private int index = -1;
+	private List<JSONObject> data;
+	private int index = -1;
 
-    private ProjektronDataSource() {
-        super();
-        final DataFetcher dataFetcher = new DataFetcher();
-        dataFetcher.authenticate("{userLogin: \"<USERNAME>\", userPwd: \"<PASSWORD>\"}");
-        data = dataFetcher.getData(null).getJSONArray("bookings");
-    }
+	private ProjektronDataSource() {
+		AuthenticationObject authObject = Authenticator.authenticate("<USERNAME>", "<PASSWORD>");
 
-    @Override
-    public boolean next() {
-        index++;
-        return index < data.length();
-    }
+		data = BookingsFetcher.fetchAllBookingsForAccount(authObject);
+	}
 
-    @Override
-    public Object getFieldValue(JRField jrField) {
-        JSONObject booking = data.getJSONObject(index);
-        return booking.get(jrField.getName());
-    }
+	@Override
+	public boolean next() {
+		index++;
+		return index < data.size();
+	}
 
-    public static ProjektronDataSource getDataSource() {
-        return new ProjektronDataSource();
-    }
+	@Override
+	public Object getFieldValue(JRField jrField) {
+		JSONObject booking = data.get(index);
+		if (jrField.getName().equals("effortExpense")) {
+			System.err.println(booking.get("effortExpense"));
+		}
+		if (booking.has(jrField.getName())) {
+			return booking.get(jrField.getName());
+		} else {
+			return new JSONObject();
+		}
+	}
+
+	public static ProjektronDataSource getDataSource() {
+		return new ProjektronDataSource();
+	}
 }
