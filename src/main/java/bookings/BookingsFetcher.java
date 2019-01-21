@@ -13,7 +13,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import authentication.AuthenticationObject;
+import authentication.BookingsAuthenticationObject;
 
 public class BookingsFetcher {
 
@@ -26,7 +26,7 @@ public class BookingsFetcher {
 	 *             server.
 	 * @return {@link List} of {@link JSONObject}
 	 */
-	public static List<JSONObject> fetchAllBookingsForAccount(AuthenticationObject auth) {
+	public static List<JSONObject> fetchAllBookingsForAccount(BookingsAuthenticationObject auth) {
 		String url = BCS_SERVER + BOOKINGS_PATH;
 		try {
 			HttpResponse<JsonNode> response = getRequestWithAuthObject(auth, url);
@@ -49,7 +49,7 @@ public class BookingsFetcher {
 		return Collections.emptyList();
 	}
 
-	private static HttpResponse<JsonNode> getRequestWithAuthObject(AuthenticationObject auth, String url)
+	private static HttpResponse<JsonNode> getRequestWithAuthObject(BookingsAuthenticationObject auth, String url)
 			throws UnirestException {
 		return Unirest.get(url).header("Cookie", auth.getMobileAppTokenCookie())
 				.header("X-CSRF-Token", auth.getxCsrfToken()).header("cache-control", "no-cache").asJson();

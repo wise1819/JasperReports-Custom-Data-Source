@@ -10,12 +10,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class Authenticator {
 
-	public static final AuthenticationObject INVALID_AUTHENTICATIONOBJECT = new AuthenticationObject("", "");
+	public static final BookingsAuthenticationObject INVALID_AUTHENTICATIONOBJECT = new BookingsAuthenticationObject("", "");
 
 	private static final String URL_BCS = "https://fu-projekt.bcs-hosting.de/app/rest/auth/login";
 	private static final String URL_BCS_DEMO = "http://fuberlinws18.demo.projektron.de/app/rest/auth/login";
 
-	public static AuthenticationObject authenticate(String username, String password) {
+	public static BookingsAuthenticationObject authenticateForBookings(String username, String password) {
 		String urlBCS = URL_BCS;
 
 		HashMap<String, String> data = new HashMap<>();
@@ -26,19 +26,19 @@ public class Authenticator {
 			if (authResponse.getStatus() == 200) {
 				String mobileAppTokenCookie = getMobileAppTokenCookie(authResponse);
 				String xCsrfToken = getXCsrfToken(authResponse);
-				return new AuthenticationObject(mobileAppTokenCookie, xCsrfToken);
+				return new BookingsAuthenticationObject(mobileAppTokenCookie, xCsrfToken);
 			} else {
-				return new AuthenticationObject("ResponseCode was not 200 but: " + authResponse.getStatus()
+				return new BookingsAuthenticationObject("ResponseCode was not 200 but: " + authResponse.getStatus()
 						+ ". Authorization Response was: " + authResponse.getBody());
 			}
 
 		} catch (UnirestException e) {
 			e.printStackTrace();
-			return new AuthenticationObject("Exception happened during authorization: " + e.getMessage());
+			return new BookingsAuthenticationObject("Exception happened during authorization: " + e.getMessage());
 		}
 	}
 
-	public AuthenticationObject authenticateToDemoServer(String username, String password) {
+	public BookingsAuthenticationObject authenticateToDemoServer(String username, String password) {
 		String urlBCS = URL_BCS_DEMO;
 
 		HashMap<String, String> data = new HashMap<>();
@@ -49,7 +49,7 @@ public class Authenticator {
 			if (authResponse.getStatus() == 200) {
 				String mobileAppTokenCookie = getMobileAppTokenCookie(authResponse);
 				String xCsrfToken = getXCsrfToken(authResponse);
-				return new AuthenticationObject(mobileAppTokenCookie, xCsrfToken);
+				return new BookingsAuthenticationObject(mobileAppTokenCookie, xCsrfToken);
 			} else {
 				return INVALID_AUTHENTICATIONOBJECT;
 			}

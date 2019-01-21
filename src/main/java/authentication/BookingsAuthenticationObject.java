@@ -1,18 +1,18 @@
 package authentication;
 
-public class AuthenticationObject {
+public class BookingsAuthenticationObject {
 
 	private final String mobileAppTokenCookie;
 	private final String xCsrfToken;
 	private final String authenticationMessage;
 
-	public AuthenticationObject(String mobileAppTokenCookie, String xCsrfToken) {
+	public BookingsAuthenticationObject(String mobileAppTokenCookie, String xCsrfToken) {
 		this.mobileAppTokenCookie = mobileAppTokenCookie;
 		this.xCsrfToken = xCsrfToken;
 		this.authenticationMessage = "";
 	}
 
-	public AuthenticationObject(String message) {
+	public BookingsAuthenticationObject(String message) {
 		this.mobileAppTokenCookie = "";
 		this.xCsrfToken = "";
 		this.authenticationMessage = message;

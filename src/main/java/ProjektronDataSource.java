@@ -2,7 +2,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import authentication.AuthenticationObject;
+import authentication.BookingsAuthenticationObject;
 import authentication.Authenticator;
 import authentication.Credentials;
 import bookings.BookingsFetcher;
@@ -12,12 +12,12 @@ import net.sf.jasperreports.engine.JRField;
 public class ProjektronDataSource implements JRDataSource {
 	private List<JSONObject> data;
 	private int index = -1;
-	private AuthenticationObject authObject;
+	private BookingsAuthenticationObject authObject;
 
 	private ProjektronDataSource() {
 		if (authObject == null || !authObject.isValid()) {
 			Credentials c = Credentials.fetchCredentials();
-			authObject = Authenticator.authenticate(c.username, c.password);
+			authObject = Authenticator.authenticateForBookings(c.username, c.password);
 		}
 
 		if (!authObject.isValid()) {
