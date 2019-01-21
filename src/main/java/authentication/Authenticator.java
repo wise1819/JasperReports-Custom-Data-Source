@@ -1,6 +1,7 @@
 package authentication;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -10,13 +11,13 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class Authenticator {
 
-	public static final BookingsAuthenticationObject INVALID_AUTHENTICATIONOBJECT = new BookingsAuthenticationObject("", "");
+	public static final BookingsAuthenticationObject INVALID_AUTHENTICATIONOBJECT = new BookingsAuthenticationObject("",
+			"");
 
-	private static final String URL_BCS = "https://fu-projekt.bcs-hosting.de/app/rest/auth/login";
-	private static final String URL_BCS_DEMO = "http://fuberlinws18.demo.projektron.de/app/rest/auth/login";
+	private static final String URL_BCS = "https://fu-projekt.bcs-hosting.de/";
 
 	public static BookingsAuthenticationObject authenticateForBookings(String username, String password) {
-		String urlBCS = URL_BCS;
+		String urlBCS = URL_BCS + "app/rest/auth/login";
 
 		HashMap<String, String> data = new HashMap<>();
 		data.put("userLogin", username);
@@ -38,26 +39,35 @@ public class Authenticator {
 		}
 	}
 
-	public BookingsAuthenticationObject authenticateToDemoServer(String username, String password) {
-		String urlBCS = URL_BCS_DEMO;
+	public static MylynAuthenticationObject authenticateForMylynData(String username, String password) {
+
+		String urlBCS = URL_BCS + "rest/auth/login";
 
 		HashMap<String, String> data = new HashMap<>();
-		data.put("user", username);
-		data.put("pwd", password);
+		data.put("userLogin", username);
+		data.put("userPwd", password);
+
 		try {
 			HttpResponse<String> authResponse = doPostRequest(urlBCS, data);
 			if (authResponse.getStatus() == 200) {
-				String mobileAppTokenCookie = getMobileAppTokenCookie(authResponse);
-				String xCsrfToken = getXCsrfToken(authResponse);
-				return new BookingsAuthenticationObject(mobileAppTokenCookie, xCsrfToken);
+				String xCsrfToken = authResponse.getHeaders().get("X-CSRF-Token").get(0);
+				List<String> setCookieHeader = authResponse.getHeaders().get("Set-Cookie");
+				String sessionIdCookie = null;
+				for (String cookiePart : setCookieHeader.get(0).split(";")) {
+					if (cookiePart.contains("JSESSIONID")) {
+						sessionIdCookie = cookiePart;
+					}
+				}
+				return new MylynAuthenticationObject(xCsrfToken, sessionIdCookie);
 			} else {
-				return INVALID_AUTHENTICATIONOBJECT;
+				return new MylynAuthenticationObject("ResponseCode was not 200 but: " + authResponse.getStatus()
+						+ ". Authorization Response was: " + authResponse.getBody());
 			}
-
 		} catch (UnirestException e) {
 			e.printStackTrace();
+			return new MylynAuthenticationObject("Exception happened during authorization: " + e.getMessage());
 		}
-		return INVALID_AUTHENTICATIONOBJECT;
+
 	}
 
 	private static HttpResponse<String> doPostRequest(String url, HashMap<String, String> data)
