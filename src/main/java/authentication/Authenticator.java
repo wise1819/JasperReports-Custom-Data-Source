@@ -14,10 +14,11 @@ public class Authenticator {
 	public static final BookingsAuthenticationObject INVALID_AUTHENTICATIONOBJECT = new BookingsAuthenticationObject("",
 			"");
 
-	private static final String URL_BCS = "https://fu-projekt.bcs-hosting.de/";
+	private static final String URL_BCS_BOOKINGS = "https://fu-projekt.bcs-hosting.de/";
+	private static final String URL_BCS_TICKETS = "http://fuberlinws18.demo.projektron.de/";
 
 	public static BookingsAuthenticationObject authenticateForBookings(String username, String password) {
-		String urlBCS = URL_BCS + "app/rest/auth/login";
+		String urlBCS = URL_BCS_BOOKINGS + "app/rest/auth/login";
 
 		HashMap<String, String> data = new HashMap<>();
 		data.put("userLogin", username);
@@ -41,11 +42,11 @@ public class Authenticator {
 
 	public static MylynAuthenticationObject authenticateForMylynData(String username, String password) {
 
-		String urlBCS = URL_BCS + "rest/auth/login";
+		String urlBCS = URL_BCS_TICKETS + "rest/auth/login";
 
 		HashMap<String, String> data = new HashMap<>();
-		data.put("userLogin", username);
-		data.put("userPwd", password);
+		data.put("login", username);
+		data.put("pwd", password);
 
 		try {
 			HttpResponse<String> authResponse = doPostRequest(urlBCS, data);

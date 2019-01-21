@@ -2,8 +2,8 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import authentication.BookingsAuthenticationObject;
 import authentication.Authenticator;
+import authentication.BookingsAuthenticationObject;
 import authentication.Credentials;
 import bookings.BookingsFetcher;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -37,9 +37,6 @@ public class ProjektronDataSource implements JRDataSource {
 	@Override
 	public Object getFieldValue(JRField jrField) {
 		JSONObject booking = data.get(index);
-		if (jrField.getName().equals("effortExpense")) {
-			System.err.println(booking.get("effortExpense"));
-		}
 		if (booking.has(jrField.getName())) {
 			return booking.get(jrField.getName());
 		} else {
