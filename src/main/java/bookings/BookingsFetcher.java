@@ -32,7 +32,6 @@ public class BookingsFetcher {
 			HttpResponse<JsonNode> response = getRequestWithAuthObject(auth, url);
 
 			List<JSONObject> bookings = new ArrayList<JSONObject>();
-			System.out.println(response.getBody().toString().substring(0, 20000));
 			JSONArray bookingsJsonArray = response.getBody().getObject().getJSONArray("bookings");
 			for (int i = 0; i < bookingsJsonArray.length(); i++) {
 				bookings.add(bookingsJsonArray.getJSONObject(i));

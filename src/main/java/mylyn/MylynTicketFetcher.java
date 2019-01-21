@@ -14,7 +14,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
 
-import authentication.Authenticator;
 import authentication.MylynAuthenticationObject;
 
 public class MylynTicketFetcher {
@@ -30,12 +29,10 @@ public class MylynTicketFetcher {
 	 */
 	public static List<JSONObject> fetchAllTicketsForAccount(MylynAuthenticationObject auth) {
 		String url = BCS_SERVER + TICKETS_PATH;
-		System.out.println(url);
 		try {
 			HttpResponse<JsonNode> response = getRequestWithAuthObject(auth, url);
 
 			List<JSONObject> tickets = new ArrayList<JSONObject>();
-			System.out.println(response.getBody());
 			JSONArray ticketsJsonArray = response.getBody().getArray();
 			for (int i = 0; i < ticketsJsonArray.length(); i++) {
 				tickets.add(ticketsJsonArray.getJSONObject(i));
@@ -58,19 +55,7 @@ public class MylynTicketFetcher {
 				.header("X-CSRF-Token", auth.getxCsrfToken()).header("cache-control", "no-cache")
 				.header("Connection", "keep-alive");
 
-		request.getHeaders().forEach((k, v) -> System.out.println(k + ": " + v));
 		return request.asJson();
-	}
-
-	public static void main(String[] args) {
-		MylynAuthenticationObject authenticateForMylynData = Authenticator.authenticateForMylynData("Admin", "Admin");
-		if (!authenticateForMylynData.isValid()) {
-			System.out.println("Authentication did not work");
-			System.out.println(authenticateForMylynData.getAuthenticationMessage());
-			return;
-		}
-		List<JSONObject> allTickets = MylynTicketFetcher.fetchAllTicketsForAccount(authenticateForMylynData);
-		allTickets.forEach(System.out::println);
 	}
 
 }

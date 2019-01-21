@@ -82,7 +82,6 @@ public class Authenticator {
 	}
 
 	private static String getMobileAppTokenCookie(HttpResponse<String> authResponse) {
-		System.out.println(authResponse.getHeaders());
 		String cookies = authResponse.getHeaders().get("Set-Cookie").get(0);
 		int beginIndex = cookies.indexOf("MobileAppToken");
 		int endIndex = cookies.substring(beginIndex).indexOf(";");
