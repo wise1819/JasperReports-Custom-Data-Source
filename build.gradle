@@ -1,0 +1,20 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '4.0.3'
+    id 'java'
+}
+
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly group: 'com.lowagie', name: 'itext', version: '4.2.2', ext: 'pom'
+    compileOnly group: 'org.olap4j', name: 'olap4j', version: '1.2.0'
+    compileOnly group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.1.0'
+    implementation group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+    
+}
